@@ -30,6 +30,7 @@ for(i = 0; i &lt; MAX_STARS; i++)
 {
     instance_create(irandom_range(0, room_width), irandom_range(0, room_height), oStar);
 }
+
 </string>
           </argument>
         </arguments>

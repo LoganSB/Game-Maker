@@ -20,7 +20,7 @@
     <room>rooms\room0</room>
   </rooms>
   <constants number="1">
-    <constant name="MAX_STARS">1000</constant>
+    <constant name="MAX_STARS">10000</constant>
   </constants>
   <help>
     <rtf>help.rtf</rtf>
