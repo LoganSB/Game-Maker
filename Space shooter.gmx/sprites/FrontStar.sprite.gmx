@@ -20,6 +20,6 @@
   <width>3</width>
   <height>3</height>
   <frames>
-    <frame index="0">images\Star_0.png</frame>
+    <frame index="0">images\FrontStar_0.png</frame>
   </frames>
 </sprite>

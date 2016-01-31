@@ -6,21 +6,30 @@
   <NewExtensions/>
   <sounds name="sound"/>
   <sprites name="sprites">
-    <sprite>sprites\Star</sprite>
+    <sprite>sprites\FrontStar</sprite>
+    <sprite>sprites\BackStar</sprite>
+    <sprite>sprites\Abaddon</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\bEmptySpace</background>
   </backgrounds>
   <paths name="paths"/>
+  <scripts name="scripts">
+    <script>scripts\Rotate_Player.gml</script>
+  </scripts>
   <objects name="objects">
-    <object>objects\oStar</object>
+    <object>objects\oFrontStar</object>
+    <object>objects\oBackStar</object>
     <object>objects\oStarBackground</object>
+    <object>objects\oPlayer</object>
+    <object>objects\object4</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\room0</room>
   </rooms>
-  <constants number="1">
-    <constant name="MAX_STARS">10000</constant>
+  <constants number="2">
+    <constant name="MAX_STARS">1000</constant>
+    <constant name="MAX_SPEED">4</constant>
   </constants>
   <help>
     <rtf>help.rtf</rtf>
