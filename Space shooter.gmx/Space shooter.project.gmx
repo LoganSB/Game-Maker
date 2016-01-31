@@ -4,11 +4,17 @@
     <Config>Configs\Default</Config>
   </Configs>
   <NewExtensions/>
-  <sounds name="sound"/>
+  <sounds name="sound">
+    <sound>sound\PlasmaSound</sound>
+    <sound>sound\BeamSound</sound>
+    <sound>sound\BackgroundMusic</sound>
+  </sounds>
   <sprites name="sprites">
     <sprite>sprites\FrontStar</sprite>
     <sprite>sprites\BackStar</sprite>
     <sprite>sprites\Abaddon</sprite>
+    <sprite>sprites\Cursor</sprite>
+    <sprite>sprites\sPlasma</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\bEmptySpace</background>
@@ -17,12 +23,21 @@
   <scripts name="scripts">
     <script>scripts\Rotate_Player.gml</script>
   </scripts>
+  <shaders name="shaders">
+    <shader type="GLSLES">shaders\shader0.shader</shader>
+  </shaders>
   <objects name="objects">
     <object>objects\oFrontStar</object>
     <object>objects\oBackStar</object>
     <object>objects\oStarBackground</object>
     <object>objects\oPlayer</object>
-    <object>objects\object4</object>
+    <object>objects\oCursor</object>
+    <object>objects\oMainControl</object>
+    <object>objects\oTurretHardpoint</object>
+    <objects name="WeaponTypes">
+      <object>objects\oPlasma</object>
+      <object>objects\oBeam</object>
+    </objects>
   </objects>
   <rooms name="rooms">
     <room>rooms\room0</room>
