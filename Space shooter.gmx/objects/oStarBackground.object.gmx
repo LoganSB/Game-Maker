@@ -25,10 +25,14 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var i;
+            <string>///Place random stars
+
+largeStarFlux = 1.05;
+
+//place stars
 repeat MAX_STARS
 {
-    instance_create(irandom_range(0, room_width * 1.05), irandom_range(0, room_height * 1.05), oFrontStar);
+    instance_create(irandom_range(0, room_width * largeStarFlux), irandom_range(0, room_height * largeStarFlux), oFrontStar);
     instance_create(irandom_range(0, room_width), irandom_range(0, room_height), oBackStar);
 }
 
@@ -54,10 +58,12 @@ repeat MAX_STARS
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>with(oFrontStar)
+            <string>///Paralax front stars
+
+with(oFrontStar)
 {
-    self.x = self.iX - oMainControl.viewDeltaX * 0.05;
-    self.y = self.iY - oMainControl.viewDeltaY * 0.05;
+    self.x = self.iX - oMainControl.viewDeltaX * (other.largeStarFlux - 1);
+    self.y = self.iY - oMainControl.viewDeltaY * (other.largeStarFlux - 1);
 }
 </string>
           </argument>

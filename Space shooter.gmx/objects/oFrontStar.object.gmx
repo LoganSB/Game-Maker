@@ -25,7 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>iX = x;
+            <string>///Store relative position
+
+iX = x;
 iY = y;
 </string>
           </argument>

@@ -8,6 +8,7 @@
     <sound>sound\PlasmaSound</sound>
     <sound>sound\BeamSound</sound>
     <sound>sound\BackgroundMusic</sound>
+    <sound>sound\EngineSound</sound>
   </sounds>
   <sprites name="sprites">
     <sprite>sprites\FrontStar</sprite>
@@ -15,6 +16,7 @@
     <sprite>sprites\Abaddon</sprite>
     <sprite>sprites\Cursor</sprite>
     <sprite>sprites\sPlasma</sprite>
+    <sprite>sprites\EnemyShip</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\bEmptySpace</background>
@@ -22,6 +24,7 @@
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\Rotate_Player.gml</script>
+    <script>scripts\wrap_angle.gml</script>
   </scripts>
   <shaders name="shaders">
     <shader type="GLSLES">shaders\shader0.shader</shader>
@@ -31,13 +34,15 @@
     <object>objects\oBackStar</object>
     <object>objects\oStarBackground</object>
     <object>objects\oPlayer</object>
-    <object>objects\oCursor</object>
     <object>objects\oMainControl</object>
     <object>objects\oTurretHardpoint</object>
+    <object>objects\oEnemy</object>
     <objects name="WeaponTypes">
       <object>objects\oPlasma</object>
       <object>objects\oBeam</object>
     </objects>
+    <object>objects\oTotalDamageText</object>
+    <object>objects\oDamageText</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\room0</room>

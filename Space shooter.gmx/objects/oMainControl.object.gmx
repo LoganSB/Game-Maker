@@ -25,9 +25,12 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>cursor_sprite = 3;
+            <string>//Var init
 
-sound_volume(2, 0.5)
+cursor_sprite = Cursor;
+
+audio_play_sound(BackgroundMusic, 0, true);
+audio_sound_gain(BackgroundMusic, 0.2, 0)
 
 viewInitialX = view_xview[0];
 viewInitialY = view_yview[0];
@@ -36,30 +39,6 @@ viewDeltaX = 0;
 viewDeltaY = 0;
 
 </string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>211</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_sound</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>6</kind>
-            <sound>BackgroundMusic</sound>
-          </argument>
-          <argument>
-            <kind>3</kind>
-            <string>1</string>
           </argument>
         </arguments>
       </action>
@@ -81,13 +60,21 @@ viewDeltaY = 0;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if(keyboard_check(vk_escape))
+            <string>///Gamestate input
+
+if(keyboard_check(vk_escape))
 {
     game_end();
 }
 
+if(keyboard_check(ord('e')))
+{
+    instance_create(random(2000), random(2000), oEnemy);
+}
+
 viewDeltaX = view_xview[0] - viewInitialX; 
 viewDeltaY = view_yview[0] - viewInitialY; 
+
 </string>
           </argument>
         </arguments>
@@ -130,8 +117,10 @@ viewDeltaY = view_yview[0] - viewInitialY;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_text(view_xview[0], view_yview[0], string(viewDeltaX));
-draw_text(view_xview[0], view_yview[0] + 30, string(viewDeltaY));
+            <string>///Debug info
+
+//draw_text(view_xview[0], view_yview[0], string(viewDeltaX));
+//draw_text(view_xview[0], view_yview[0] + 30, string(viewDeltaY));
 </string>
           </argument>
         </arguments>

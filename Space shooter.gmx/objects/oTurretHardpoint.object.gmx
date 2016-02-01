@@ -25,7 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>myParent = object_get_parent(object_index);
+            <string>///Var init
+
+myParent = object_get_parent(object_index); //player ship
 
 laserReady = true;
 
@@ -33,14 +35,27 @@ laserReload = random_range(15, 20);
 
 timeSinceLastShot = laserReload;
 
+//initial relative position
 iX = x - myParent.x;
 iY = y - myParent.y;
 
-distanceFromParentCenter = distance_to_point(myParent.x, myParent.y);
+//used to maintain position
+distanceFromParentCenter = sqrt(sqr(x - myParent.x) +  sqr(y - myParent.y));
 
-angleToMouse = radtodeg(arctan2(myParent.x - mouse_x, myParent.y - mouse_y)) - 180;
-angleToHardpoint = radtodeg(arctan2(x - myParent.x, -(y - myParent.y))) + myParent.image_angle + 90;
+parentRotation = myParent.image_angle;
+parentRotDelta = 0;
 
+//firing arc, possibly uneeded realism
+MIN_ANGLE = 10;
+MAX_ANGLE = 170;
+
+angleToMouse = wrap_angle(radtodeg(arctan2(-(mouse_y - y), mouse_x - x)) - myParent.image_angle);
+angleToHardpoint = wrap_angle(radtodeg(arctan2(-(y - myParent.y), x - myParent.x)) - myParent.image_angle);
+
+angle = angleToMouse; // firing angle
+lockedAngle = angle;
+
+locked = false;
 </string>
           </argument>
         </arguments>
@@ -63,51 +78,77 @@ angleToHardpoint = radtodeg(arctan2(x - myParent.x, -(y - myParent.y))) + myPare
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//the relative position changes based on:
+            <string>///Update values
+//the relative position changes based on:
 //the length of the vector from parent center to this center
 //the ABSOLUTE(not relative) angle it is at (angle of parent + angle from parents center)
-x = myParent.x + distanceFromParentCenter * cos(arctan2(-iY, iX) + degtorad(myParent.image_angle));
-y = myParent.y + distanceFromParentCenter * -sin(arctan2(-iY, iX) + degtorad(myParent.image_angle));
-
 timeSinceLastShot++;
+
+damageRoll = myParent.damageRoll;
 
 if(timeSinceLastShot &gt; laserReload)
 {
     laserReady = true;
 }
 
-angleToMouse = radtodeg(arctan2(mouse_x - myParent.x, -(mouse_y - myParent.y))) + myParent.image_angle + 90;
-if(angleToMouse &lt; -180)
+if(parentRotation != myParent.image_angle &amp;&amp; locked)
 {
-    angleToMouse = 180
+    parentRotDelta = parentRotation - myParent.image_angle;
+    parentRotation = myParent.image_angle;
 }
+
+angleToMouse = wrap_angle(radtodeg(arctan2(-(mouse_y - y), mouse_x - x)) - myParent.image_angle);
+
 if(angleToMouse &gt; 180)
 {
-    angleToMouse = -180;
+    angleToMouse = angleToMouse;
 }
 
-angleToHardpoint = radtodeg(arctan2(x - myParent.x, -(y - myParent.y))) + myParent.image_angle + 90;
-if(angleToHardpoint &lt; -180)
-{
-    angleToHardpoint = 180
-}
-if(angleToHardpoint &gt; 180)
-{
-    angleToHardpoint = -180;
-}
+x = myParent.x + distanceFromParentCenter * cos(arctan2(-iY, iX) + degtorad(myParent.image_angle));
+y = myParent.y + distanceFromParentCenter * -sin(arctan2(-iY, iX) + degtorad(myParent.image_angle));
 
-if(angleToMouse &lt; -10 &amp;&amp; angleToHardpoint &lt; -10 || angleToMouse &gt; 10 &amp;&amp; angleToHardpoint &gt; 10)
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Input handle
+//if the angle to the hardpoint is positive, then the angle to mouse needs to be positive or you shoot through the ship
+if((angleToMouse &gt; -MAX_ANGLE &amp;&amp; angleToMouse &lt; -MIN_ANGLE &amp;&amp; angleToHardpoint &lt; 0) || (angleToMouse &lt; MAX_ANGLE &amp;&amp; angleToMouse &gt; MIN_ANGLE &amp;&amp; angleToHardpoint &gt; 0))
 {
+    angle = 0;
+    locked = false;
+    parentRotation = myParent.image_angle;
+    
     if(mouse_check_button(mb_left) &amp;&amp; laserReady)
     {
         switch myParent.weaponType
         {
                case 1:
-                    instance_create(x, y, oPlasma);
+                    damageRoll = random_range(0.75, 1.25) //plasma can all be random
+                    instance = instance_create(x, y, oPlasma);
+                    instance.damage = instance.baseDamage * damageRoll;
                     laserReload = random_range(15, 20);
                     break;
                case 2:
-                    instance_create(x, y, oBeam);
+                    instance = instance_create(x, y, oBeam);
+                    //damage variation is handled in player to make beams consistant
+                    instance.damage = instance.baseDamage * damageRoll;
                     laserReload = random_range(65, 70);
                     break;
         }
@@ -115,7 +156,26 @@ if(angleToMouse &lt; -10 &amp;&amp; angleToHardpoint &lt; -10 || angleToMouse &g
         laserReady = false
     }
 }
-
+else
+{
+    if(!locked)
+    {
+        if(abs(angleToMouse) &lt; 90)
+        {
+            lockedAngle = sign(angleToMouse) * MIN_ANGLE + myParent.image_angle;
+        }
+        else
+        {
+            lockedAngle = sign(angleToMouse) * MAX_ANGLE + myParent.image_angle;         
+        }
+    }
+    lockedAngle = wrap_angle(lockedAngle);
+    
+    locked = true;
+    
+    angle -= parentRotDelta;
+    parentRotDelta = 0;
+}
 </string>
           </argument>
         </arguments>

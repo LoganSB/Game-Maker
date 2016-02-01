@@ -25,7 +25,11 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>beamParent = instance_nearest(x, y, oTurretHardpoint);
+            <string>///Initial setup + instant collsion check
+beamParent = instance_nearest(x, y, oTurretHardpoint);
+temp = false;
+damage = 0.0;
+baseDamage = 0.3;
 
 rX = x - beamParent.x;
 rY = y - beamParent.y;
@@ -44,31 +48,37 @@ offscreenCordY = y + 2000 * -sin(degtorad(angle));
 
 incrementInterval = 2;
 lastIncrement = 0;
+
+objectHit = 0;
+
+if(objectHit != 0 &amp;&amp; temp == false)
+{
+    offscreenCordX = objectHit.x;
+    offscreenCordY = objectHit.y;
+    
+    if(instance_nearest(objectHit.x, objectHit.y, oTotalDamageText))
+    {
+        damageBox = instance_nearest(objectHit.x, objectHit.y, oTotalDamageText)
+    }
+    
+    if(damageBox == 0)
+    {
+        damageBox = instance_create(objectHit.x, objectHit.y, oTotalDamageText);
+    }
+    
+    damageBox.alarm[0] = damageBox.life;
+    damageBox.typeTotal++;
+    damageBox.damageAmount += damage;
+    damageBox.minDamage = damage * 0.75;
+    damageBox.maxDamage = damage * 1.25;
+    damageBox.lastDamageInstance = damage;
+    
+    objectHit.health -= damage;
+    temp = true;
+}
+
+audio_play_sound(BeamSound, 0, false);
 </string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>211</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_sound</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>6</kind>
-            <sound>BeamSound</sound>
-          </argument>
-          <argument>
-            <kind>3</kind>
-            <string>0</string>
           </argument>
         </arguments>
       </action>
@@ -95,8 +105,17 @@ y = beamParent.y;
 
 angle = point_direction(x, y, mouse_x, mouse_y);
 
-offscreenCordX = x + 2000 * cos(degtorad(angle));
-offscreenCordY = y + 2000 * -sin(degtorad(angle));
+if(!beamParent.locked)
+{
+    offscreenCordX = x + 2000 * cos(degtorad(angle));
+    offscreenCordY = y + 2000 * -sin(degtorad(angle));
+}
+else
+{
+    angle = beamParent.lockedAngle + beamParent.angle;
+    offscreenCordX = x + 2000 * cos(degtorad(angle));
+    offscreenCordY = y + 2000 * -sin(degtorad(angle));
+}
 
 if(width &lt; maxWidth &amp;&amp; life &gt; 0 &amp;&amp; lastIncrement &gt;= incrementInterval)
 {
@@ -125,6 +144,50 @@ if(life &lt;= 0)
 }
 
 lastIncrement++;
+
+objectHit = 0;
+
+damageBox = 0;
+
+if(collision_line(x, y, offscreenCordX, offscreenCordY, oEnemy, false, true))
+{
+    objectHit = collision_line(x, y, offscreenCordX, offscreenCordY, oEnemy, false, true);
+}
+if(objectHit != 0 &amp;&amp; temp == false)
+{
+    offscreenCordX = objectHit.x;
+    offscreenCordY = objectHit.y;
+
+    if(instance_nearest(objectHit.x, objectHit.y, oTotalDamageText))
+    {
+        damageBox = instance_nearest(objectHit.x, objectHit.y, oTotalDamageText)
+        
+        if(damageBox.assosciatedTarget != objectHit)
+        {
+            damageBox = 0;
+        }
+    }
+    
+    if(damageBox == 0)
+    {
+        damageBox = instance_create(objectHit.x, objectHit.y, oTotalDamageText);
+        
+        damageBox.assosciatedTarget = objectHit;
+    }
+    
+    damageBox.alarm[0] = damageBox.life;
+    damageBox.typeTotal++;
+    damageBox.damageAmount += damage;
+    damageBox.minDamage = baseDamage * 0.75;
+    damageBox.maxDamage = baseDamage * 1.25;
+    damageBox.lastDamageInstance = damage;
+    
+    objectHit.myHealth -= damage;
+    temp = true;
+}
+
+temp = false;
+
 </string>
           </argument>
         </arguments>
@@ -147,14 +210,17 @@ lastIncrement++;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_line_width_colour(x, y, offscreenCordX, offscreenCordY, 0.5, c_blue, c_blue);
+            <string>///Draw event
+draw_set_alpha(width / (maxWidth / 2));
+
+draw_line_width_colour(x, y, offscreenCordX, offscreenCordY, 0.5, c_blue, c_blue);
 
 //draw_set_alpha(width / (maxWidth + 2));
 draw_set_alpha(1 / (maxWidth));
 
 for(i = 0; i &lt; width; i++)
 {
-    draw_line_width_colour(x, y, offscreenCordX, offscreenCordY, i, c_aqua, c_aqua);
+    draw_line_width_colour(x, y, offscreenCordX, offscreenCordY, i, c_white, c_white);
 }
 
 draw_set_alpha(1.0);
@@ -165,7 +231,7 @@ draw_set_alpha(1.0);
     </event>
   </events>
   <PhysicsObject>0</PhysicsObject>
-  <PhysicsObjectSensor>0</PhysicsObjectSensor>
+  <PhysicsObjectSensor>-1</PhysicsObjectSensor>
   <PhysicsObjectShape>0</PhysicsObjectShape>
   <PhysicsObjectDensity>0.5</PhysicsObjectDensity>
   <PhysicsObjectRestitution>0.100000001490116</PhysicsObjectRestitution>
