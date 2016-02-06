@@ -29,6 +29,8 @@
 vspeed = -1;
 friction = 0.02;
 
+activeTime = 2;
+
 associatedTarget = 0;
 
 damageAmount = 0.0;
@@ -49,7 +51,7 @@ minPotential = typeTotal * minDamage;
 maxPotential = typeTotal * maxDamage;
 potentialRange = minPotential - maxPotential;
 
-life = room_speed * 1.5;
+life = room_speed * activeTime;
 </string>
           </argument>
         </arguments>
@@ -174,9 +176,33 @@ switch(type)
          break;
 }
 
-draw_text_colour(x, y, damageAmount,  color, color, color, color, alarm[0] / room_speed / 2)
+draw_text_colour(x, y, damageAmount,  color, color, color, color, alarm[0] / room_speed)
 
 </string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>526</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_font</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>12</kind>
+            <font>fDamageFont</font>
+          </argument>
+          <argument>
+            <kind>4</kind>
+            <string>1</string>
           </argument>
         </arguments>
       </action>

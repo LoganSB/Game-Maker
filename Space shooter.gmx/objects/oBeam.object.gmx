@@ -41,7 +41,7 @@ width = 1;
 life = room_speed / 2;
 maxLife = life;
 
-angle = point_direction(x, y, mouse_x, mouse_y);
+angle = beamParent.angleToMouse;
 
 offscreenCordX = x + 2000 * cos(degtorad(angle));
 offscreenCordY = y + 2000 * -sin(degtorad(angle));
@@ -53,8 +53,8 @@ objectHit = 0;
 
 if(objectHit != 0 &amp;&amp; temp == false)
 {
-    offscreenCordX = objectHit.x;
-    offscreenCordY = objectHit.y;
+    offscreenCordX = x + cos(degtorad(angle)) * distance_to_point(objectHit.x, objectHit.y);
+    offscreenCordY = y + -sin(degtorad(angle)) * distance_to_point(objectHit.x, objectHit.y);
     
     if(instance_nearest(objectHit.x, objectHit.y, oTotalDamageText))
     {
@@ -103,7 +103,7 @@ audio_play_sound(BeamSound, 0, false);
             <string>x = beamParent.x;
 y = beamParent.y;
 
-angle = point_direction(x, y, mouse_x, mouse_y);
+angle = beamParent.angleToMouse;
 
 if(!beamParent.locked)
 {
@@ -112,7 +112,7 @@ if(!beamParent.locked)
 }
 else
 {
-    angle = beamParent.lockedAngle + beamParent.angle;
+    angle = beamParent.lockedAngle;
     offscreenCordX = x + 2000 * cos(degtorad(angle));
     offscreenCordY = y + 2000 * -sin(degtorad(angle));
 }
@@ -155,9 +155,9 @@ if(collision_line(x, y, offscreenCordX, offscreenCordY, oEnemy, false, true))
 }
 if(objectHit != 0 &amp;&amp; temp == false)
 {
-    offscreenCordX = objectHit.x;
-    offscreenCordY = objectHit.y;
-
+    offscreenCordX = x + cos(degtorad(angle)) * distance_to_point(objectHit.x, objectHit.y);
+    offscreenCordY = y + -sin(degtorad(angle)) * distance_to_point(objectHit.x, objectHit.y);
+    
     if(instance_nearest(objectHit.x, objectHit.y, oTotalDamageText))
     {
         damageBox = instance_nearest(objectHit.x, objectHit.y, oTotalDamageText)
@@ -220,7 +220,7 @@ draw_set_alpha(1 / (maxWidth));
 
 for(i = 0; i &lt; width; i++)
 {
-    draw_line_width_colour(x, y, offscreenCordX, offscreenCordY, i, c_white, c_white);
+    draw_line_width_colour(x, y, offscreenCordX, offscreenCordY, i, c_aqua, c_aqua);
 }
 
 draw_set_alpha(1.0);

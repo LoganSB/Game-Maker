@@ -20,6 +20,7 @@
   </sprites>
   <backgrounds name="background">
     <background>background\bEmptySpace</background>
+    <background>background\background1</background>
   </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
@@ -29,6 +30,10 @@
   <shaders name="shaders">
     <shader type="GLSLES">shaders\shader0.shader</shader>
   </shaders>
+  <fonts name="fonts">
+    <font>fonts\fDamageFont</font>
+    <font>fonts\fDamageFont2</font>
+  </fonts>
   <objects name="objects">
     <object>objects\oFrontStar</object>
     <object>objects\oBackStar</object>
@@ -45,7 +50,9 @@
     <object>objects\oDamageText</object>
   </objects>
   <rooms name="rooms">
-    <room>rooms\room0</room>
+    <room>rooms\rTitleScreen</room>
+    <room>rooms\rGameRoom</room>
+    <room>rooms\rPauseScreen</room>
   </rooms>
   <constants number="2">
     <constant name="MAX_STARS">1000</constant>

@@ -4,7 +4,7 @@
   <solid>0</solid>
   <visible>-1</visible>
   <depth>0</depth>
-  <persistent>0</persistent>
+  <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
@@ -25,7 +25,8 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//Var init
+            <string>///Var init
+curRoom = room;
 
 cursor_sprite = Cursor;
 
@@ -61,19 +62,83 @@ viewDeltaY = 0;
           <argument>
             <kind>1</kind>
             <string>///Gamestate input
+curRoom = room;
 
-if(keyboard_check(vk_escape))
+if(keyboard_check_pressed(vk_escape))
 {
-    game_end();
+    switch(curRoom)
+    {
+        case rTitleScreen:
+             room_goto(rGameRoom);
+             curRoom = room;
+             break;
+        case rGameRoom:
+             room_goto(rPauseScreen);
+             curRoom = room;
+             break;
+        case rPauseScreen:
+             room_goto(rGameRoom);
+             curRoom = room;
+             break;
+    }
 }
 
-if(keyboard_check(ord('e')))
+if(keyboard_check_pressed(ord('E')))
 {
-    instance_create(random(2000), random(2000), oEnemy);
+    switch(curRoom)
+    {
+        case rTitleScreen:
+             instance_create(100, 100, oEnemy);
+             break;
+        case rGameRoom:
+             instance_create(random(2000), random(2000), oEnemy);
+             break;
+        case rPauseScreen:
+             game_end();
+             break;
+    }
+
 }
 
-viewDeltaX = view_xview[0] - viewInitialX; 
-viewDeltaY = view_yview[0] - viewInitialY; 
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Gamestate udates
+
+switch(curRoom)
+{
+    case rTitleScreen:
+    {
+         break;
+    }
+    case rGameRoom:
+    {
+        viewDeltaX = view_xview[0] - viewInitialX;
+        viewDeltaY = view_yview[0] - viewInitialY;
+         break;
+    }
+    case rPauseScreen:
+    {
+         break;
+    }
+}
 
 </string>
           </argument>
