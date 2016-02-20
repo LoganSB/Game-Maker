@@ -20,7 +20,7 @@
   </sprites>
   <backgrounds name="background">
     <background>background\bEmptySpace</background>
-    <background>background\background1</background>
+    <background>background\bIntroScreen</background>
   </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">

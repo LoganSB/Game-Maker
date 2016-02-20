@@ -61,7 +61,22 @@ mySpeed = 0;
             <kind>1</kind>
             <string>///Place ship parts.
 instance_create(x + 9, y - 15, oTurretHardpoint);
+instance_create(x + 13, y - 15, oTurretHardpoint);
+instance_create(x + 17, y - 15, oTurretHardpoint);
+instance_create(x + 21, y - 15, oTurretHardpoint);
+instance_create(x + 25, y - 15, oTurretHardpoint);
+instance_create(x + 29, y - 15, oTurretHardpoint);
+instance_create(x + 33, y - 15, oTurretHardpoint);
+instance_create(x + 37, y - 15, oTurretHardpoint);
 
+instance_create(x + 9, y + 15, oTurretHardpoint);
+instance_create(x + 13, y + 15, oTurretHardpoint);
+instance_create(x + 17, y + 15, oTurretHardpoint);
+instance_create(x + 21, y + 15, oTurretHardpoint);
+instance_create(x + 25, y + 15, oTurretHardpoint);
+instance_create(x + 29, y + 15, oTurretHardpoint);
+instance_create(x + 33, y + 15, oTurretHardpoint);
+instance_create(x + 37, y + 15, oTurretHardpoint);
 </string>
           </argument>
         </arguments>
@@ -133,12 +148,11 @@ y += -sin(degtorad(image_angle)) * mySpeed;
 
 if(mySpeed != 0)
 {
-    if(mySpeed &gt; 0 &amp;&amp; mySpeed - friction &lt; 0 || mySpeed &lt; 0 &amp;&amp; mySpeed + friction &gt; 0)
+    if(mySpeed &gt;= 0 &amp;&amp; (mySpeed - friction &lt;= 0) || mySpeed &lt;= 0 &amp;&amp; (mySpeed + friction &gt;= 0))
     {
         mySpeed = 0;
     }
-    
-    if(speed &gt; 0)
+    else if(speed &gt; 0)
     {
         mySpeed -= friction;
     }

@@ -84,7 +84,7 @@ relativeAngle = wrap_angle(angleToMouse - myParent.image_angle); //angle relativ
 
 if((relativeAngle &gt; -MAX_ANGLE &amp;&amp; relativeAngle &lt; -MIN_ANGLE &amp;&amp; angleToHardpoint &lt; 0) || (relativeAngle &lt; MAX_ANGLE &amp;&amp; relativeAngle &gt; MIN_ANGLE &amp;&amp; angleToHardpoint &gt; 0))
 {
-    angle = 0;
+    angle = angleToMouse;
     lockedAngle = 0;
     locked = false;
     parentRotation = myParent.image_angle;
@@ -112,20 +112,14 @@ if((relativeAngle &gt; -MAX_ANGLE &amp;&amp; relativeAngle &lt; -MIN_ANGLE &amp;
 }
 else
 {
-    angle -= parentRotDelta;
-    parentRotDelta = 0;
-    
-    if(!locked)
+    if(abs(relativeAngle) &lt; 90)
     {
-        if(abs(angleToMouse) &lt; 90)
-        {
-            lockedAngle = sign(relativeAngle) * MIN_ANGLE + myParent.image_angle;
-        }
-        else
-        {
-            lockedAngle = sign(relativeAngle) * MAX_ANGLE + myParent.image_angle;         
-        }
-    }   
+        lockedAngle = sign(angleToHardpoint) * MIN_ANGLE + myParent.image_angle;
+    }
+    else
+    {
+        lockedAngle = sign(angleToHardpoint) * MAX_ANGLE + myParent.image_angle;         
+    } 
 
     lockedAngle = wrap_angle(lockedAngle);
     
@@ -198,6 +192,7 @@ y = myParent.y + distanceFromParentCenter * -sin(arctan2(-iY, iX) + degtorad(myP
           <argument>
             <kind>1</kind>
             <string>draw_text(x, y, lockedAngle);
+draw_text(x, y + 10, angleToMouse);
 </string>
           </argument>
         </arguments>
